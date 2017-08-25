@@ -58,10 +58,6 @@ objects:
           try {
              timeout(time: 20, unit: 'MINUTES') {
                 def appName="${APP_NAME}"
-                def backendDataSecret="${BACKEND_DB_SECRET}"
-                def backendDbService="${BACKEND_DB_SERVICE}"
-                def backendDbName="${BACKEND_DB_NAME}"
-                def backendRestorePath="${BACKEND_RESTORE_PATH}"
                 def project=""
 
                 node {
