@@ -71,14 +71,6 @@ objects:
                 }
 
                 node {
-                  stage("Deploy Infrastructure") {
-                    sh "oc process -p SECRET_NAME=${backendDataSecret} -n ${project} postgresql-secret | oc replace --force -n ${project} -f -"
-                    sh "oc process -p APP_NAME=${appName} -n ${project} amq-secret | oc replace --force -n ${project} -f -"
-                    sh "oc process -p PG_RESTORE_PATH=${backendRestorePath} -p PG_SERVICE_NAME=${backendDbService} -p SECRET_NAME=${backendDataSecret} -p PG_DATABASE=${backendDbName} -n ${project} crunchydata-single-master-minishift | oc replace --force -n ${project} -f -"
-                  }
-                }
-
-                node {
                   stage("Build Platform Image") {
                     sh "oc start-build ${appName}-platform -n ${project}"
                     openshiftVerifyBuild bldCfg: "${appName}-platform", namespace: project, waitTime: '20', waitUnit: 'min'
