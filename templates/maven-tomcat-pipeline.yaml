@@ -221,6 +221,12 @@ objects:
             value: ${BACKEND_DB_SERVICE}
           - name: ${APP_NAME_UPPER}_POSTGRESQL_SERVICE_PORT
             value: '5432'
+          - name: ${BACKEND_DB_NAME}_MAX_ACTIVE
+            value: '250'
+          - name: ${BACKEND_DB_NAME}_MAX_IDLE
+            value: '20'
+          - name: ${BACKEND_DB_NAME}_MAX_WAIT
+            value: '30000'
           resources: {}
           terminationMessagePath: /dev/termination-log
           livenessProbe:
