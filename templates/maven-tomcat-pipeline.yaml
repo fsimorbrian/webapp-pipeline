@@ -53,6 +53,12 @@ objects:
     name: ${APP_NAME}
   spec:
     strategy:
+      sourceSecret:
+              name: spork-sshkey-secret
+            type: Git
+            git:
+              uri: ${GIT_SOURCE_URL}
+              ref: ${GIT_SOURCE_REF}
       jenkinsPipelineStrategy:
         jenkinsfile: |-
           try {
@@ -127,6 +133,8 @@ objects:
     resources: {}
     runPolicy: Serial
     source:
+      sourceSecret:
+        name: spork-sshkey-secret
       type: Git
       contextDir: src/main/docker
       git:
@@ -333,7 +341,7 @@ parameters:
   description: The source URL for the application
   displayName: Source URL
   required: true
-  value: https://github.com/fsimorbrian/sandbox-jdbc-query.git
+  value: git@spork.spawar.navy.mil:morbrian/sandbox-jdbc-query.git
 - name: GIT_SOURCE_REF
   description: The source Ref for the application
   displayName: Source Ref

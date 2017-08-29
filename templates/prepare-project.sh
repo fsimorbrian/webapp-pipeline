@@ -4,6 +4,10 @@ WORKSPACE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 NAMESPACE=$(oc project -q)
 
+echo "Init Builder Secrets"
+oc secrets new-sshauth spork-sshkey-secret --ssh-privatekey=${HOME}/.ssh/id_rsa
+oc secrets add serviceaccount/builder secrets/spork-sshkey-secret
+
 echo "Loading Templates"
 
 oc create -f ${WORKSPACE}/minishift-volumes.yaml
