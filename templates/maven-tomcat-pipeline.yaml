@@ -157,6 +157,9 @@ objects:
       dockerfile: |-
         FROM ${APP_NAME}-platform
         COPY ${ARTIFACT_NAME}.war /opt/webserver/webapps/ROOT.war
+        USER root
+        RUN chmod -R 775 /opt/webserver/conf/Catalina/localhost
+        USER jboss
         CMD /opt/webserver/bin/launch.sh
       binary:
         asFile: ROOT.war
@@ -201,6 +204,8 @@ objects:
           - containerPort: 8080
             protocol: TCP
           env:
+          - name: DOC_DB_SERVICE_NAME
+            value:
           - name: DB_SERVICE_PREFIX_MAPPING
             value: ${APP_NAME}-postgresql=${BACKEND_DB_NAME}
           - name: ${BACKEND_DB_NAME}_JNDI
