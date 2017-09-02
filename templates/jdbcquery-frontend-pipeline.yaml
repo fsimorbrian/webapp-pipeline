@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: jdbcquery-backend-pipeline
+  name: jdbcquery-frontend-pipeline
 objects:
 - apiVersion: v1
   kind: ImageStream
@@ -204,50 +204,8 @@ objects:
           - containerPort: 8080
             protocol: TCP
           env:
-          - name: DATA_DB_SERVICE_HOST
-            value: ${APP_ID}-${PG_DATA_DB}-db-service
-          - name: DATA_DB_SERVICE_PORT
-            value: '5432'
-          - name: DATA_DB_USERNAME
-            valueFrom:
-              secretKeyRef:
-                key: postgresql-user
-                name: ${APP_ID}-${PG_DATA_DB}-db-secret
-          - name: DATA_DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: postgresql-password
-                name: ${APP_ID}-${PG_DATA_DB}-db-secret
-          - name: DATA_DB_NAME
-            value: ${PG_DATA_DB}
-          - name: DATA_DB_MAX_TOTAL
-            value: '250'
-          - name: DATA_DB_MAX_IDLE
-            value: '20'
-          - name: DATA_DB_MAX_WAIT
-            value: '30000'
-          - name: LOB_DB_SERVICE_HOST
-            value: ${APP_ID}-${PG_LOB_DB}-db-service
-          - name: LOB_DB_SERVICE_PORT
-            value: '5432'
-          - name: LOB_DB_USERNAME
-            valueFrom:
-              secretKeyRef:
-                key: postgresql-user
-                name: ${APP_ID}-${PG_LOB_DB}-db-secret
-          - name: LOB_DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                key: postgresql-password
-                name: ${APP_ID}-${PG_LOB_DB}-db-secret
-          - name: LOB_DB_NAME
-            value: ${PG_LOB_DB}
-          - name: LOB_DB_MAX_TOTAL
-            value: '250'
-          - name: LOB_DB_MAX_IDLE
-            value: '20'
-          - name: LOB_DB_MAX_WAIT
-            value: '30000'
+          - name: BACKEND_HOSTNAME
+            value: ${BACKEND_HOSTNAME}
           resources: {}
           terminationMessagePath: /dev/termination-log
           livenessProbe:
@@ -326,13 +284,11 @@ parameters:
   description: The name assigned to all of the application objects defined in this template.
   displayName: Application Identifier
   required: true
-  value: jdbcquery-backend
-- name: PG_LOB_DB
-  description: Name of the large object database
-  value: lob
-- name: PG_DATA_DB
-  description: Name of the relational database
-  value: data
+  value: jdbcquery-frontend
+- name: BACKEND_HOSTNAME
+  description: Hostname where the backend is located.
+  required: true
+  value: backend-project.fqn.com
 - name: GIT_SOURCE_REF
   description: The source Ref for the application
   displayName: Source Ref
@@ -342,10 +298,10 @@ parameters:
   description: The source URL for the application
   displayName: Source URL
   required: true
-  value: https://github.com/fsimorbrian/sandbox-jdbc-query.git
+  value: https://github.com/fsimorbrian/sandbox-jdbc-query-frontend.git
 - name: ARTIFACT_NAME
   description: The name of war artifact.
-  value: jdbc-query
+  value: jdbc-query-frontend
 - description: Github trigger secret.  A difficult to guess string encoded as part of the webhook URL.  Not encrypted.
   displayName: GitHub Webhook Secret
   from: '[a-zA-Z0-9]{40}'
